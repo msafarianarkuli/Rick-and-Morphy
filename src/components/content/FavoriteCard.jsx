@@ -16,7 +16,7 @@ const FavoriteCard = ({ data }) => {
         component="img"
         sx={{ width: 100 }}
         image={image}
-        alt="Live from space album cover"
+        alt={name}
       />
       <CardContent>
         <Typography

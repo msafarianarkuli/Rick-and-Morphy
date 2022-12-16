@@ -24,7 +24,7 @@ const InfoCard = ({ data }) => {
         component="img"
         // height="140"
         image={image}
-        alt="green iguana"
+        alt={name}
       />
       <CardContent>
         <Box

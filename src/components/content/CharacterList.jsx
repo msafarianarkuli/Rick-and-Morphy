@@ -1,7 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import { useSearchParams } from 'react-router-dom';
-import { Grid, Pagination } from '@mui/material';
+import {
+  Backdrop,
+  CircularProgress,
+  Grid,
+  Pagination,
+} from '@mui/material';
 import { getChars } from '../../core/services/chars';
 import Card from '../common/Card';
 import { Box } from '@mui/system';
@@ -31,15 +36,24 @@ const CharacterList = () => {
   }, [data]);
 
   const handlePageChange = (value) => {
-    setSearchParams({ page: value, name: name });
+    setSearchParams({ page: value });
     setPage(value);
   };
-
   return (
     <>
-      {isLoading && <p>Loading</p>}
       <Grid container>
         <Grid item xs={12}>
+          {isLoading && (
+            <Backdrop
+              sx={{
+                color: '#fff',
+                zIndex: (theme) => theme.zIndex.drawer + 1,
+              }}
+              open={isLoading}
+            >
+              <CircularProgress color="inherit" />
+            </Backdrop>
+          )}
           <Grid container spacing={2} sx={{ py: 2 }}>
             {characters?.map((character) => (
               <Grid key={character.id} item xs={6} sm={4} md={3}>
@@ -48,14 +62,15 @@ const CharacterList = () => {
             ))}
           </Grid>
           <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-            <Pagination
-              sx={{ mx: 'auto' }}
-              hidePrevButton
-              count={paginationInfo?.pages}
-              onChange={(e, value) => handlePageChange(value)}
-              color="primary"
-              page={Number(page)}
-            />
+            {paginationInfo ? (
+              <Pagination
+                sx={{ mx: 'auto', my: 2 }}
+                count={paginationInfo?.pages}
+                onChange={(e, value) => handlePageChange(value)}
+                color="primary"
+                page={Number(page)}
+              />
+            ) : null}
           </Box>
         </Grid>
       </Grid>
